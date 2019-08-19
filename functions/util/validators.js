@@ -25,7 +25,7 @@ exports.validateSignupData = data => {
   if (data.password !== data.confirmPassword) {
     errors.confirmPassword = "Passwords must match.";
   }
-
+  console.log(errors)
   return {
     errors,
     valid: Object.keys(errors).length === 0 ? true : false

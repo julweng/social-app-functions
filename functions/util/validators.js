@@ -25,7 +25,7 @@ exports.validateSignupData = data => {
   if (data.password !== data.confirmPassword) {
     errors.confirmPassword = "Passwords must match.";
   }
-  console.log(errors)
+  console.log(errors);
   return {
     errors,
     valid: Object.keys(errors).length === 0 ? true : false
@@ -34,7 +34,7 @@ exports.validateSignupData = data => {
 
 exports.validateLoginData = data => {
   const errors = {};
-  
+
   for (let [key, value] of Object.entries(data)) {
     if (isEmpty(value)) {
       errors[key] = "Must not be empty.";
@@ -44,5 +44,24 @@ exports.validateLoginData = data => {
   return {
     errors,
     valid: Object.keys(errors).length === 0 ? true : false
+  };
+};
+
+exports.reduceUserDetails = data => {
+  const userDetails = {};
+
+  if (!isEmpty(data.bio.trim())) userDetails.bio = data.bio;
+
+  if (!isEmpty(data.website.trim())) {
+    // if user submitted a website url that does not have https:// or at least http://
+    if (data.website.trim().substring(0, 4) !== "http") {
+      userDetails.website = `http://${data.website.trim()}`;
+    } else {
+      userDetails.website = data.website;
+    }
   }
-}
+
+  if (!isEmpty(data.location.trim())) userDetails.location = data.location;
+
+  return userDetails;
+};
